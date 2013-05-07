@@ -68,7 +68,7 @@
 	
 	function findClose(index, tag,tags){
 		for(var i = index; i < tags.length; i++){
-			if(tags[i].type === "/" && tags[i].tag === "A")return i;
+			if(tags[i].type === "/" && tags[i].tag === tag.tag)return i;
 		}
 		return -1;
 	}
@@ -103,7 +103,7 @@
 			} else if(t.type === "#"){
 				c = findClose(i,t,tags);
 				if(c > -1){
-					fn += "if(ctx."+c.tag+"){\n";
+					fn += "if(ctx."+t.tag+"){\n";
 					fn += "ctxs.push(ctx);ctx=ctx['"+t.tag+"'];\n"
 					fn += makePart(part.slice(t.end+1,tags[c].start));
 					fn += "\n;ctx = ctxs.pop();\n}"

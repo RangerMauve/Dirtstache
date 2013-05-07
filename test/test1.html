@@ -40,11 +40,15 @@
 		<div id="content">
 			<div class="in">
 				<div>Template:</div>
-				<textarea id="tm"><h1>Hello, {name}.</h1>I really like <b>{{stuff}}!</b></textarea>
+				<textarea id="tm">
+<h1>Hello, {name}.</h1>I really like <b>{#stuff}{dicks}{/stuff}!</b>				
+				</textarea>
 			</div>
 			<div class="in">
 				<div>JSON:</div>
-				<textarea id="js">{"name":"Bob Dole","stuff":"dicks"}</textarea>
+				<textarea id="js">
+{"name":"Bob Dole","stuff":{"dicks":"Butts"}}
+				</textarea>
 			</div>
 			<div>
 				<div>Output:</div>
