@@ -27,6 +27,11 @@
 			
 			document.getElementById("out").innerHTML = out;
 		}
+		function toggleVisible(id){
+				var s= document.getElementById(id).style;
+				s.display = (s.display == 'none') ? 'block' : 'none';
+				return s.display;
+			}
 	</script>
 	</head>
 	<body>

@@ -51,3 +51,17 @@ ToDo:
 - Make demo of some tags
 - Figure out how to make meaningful error messages
 - Add detailed documentation for the tags
+
+Current Support:
+----------------
+- *{{}}* : Full, untested
+- *{}* : Full, untested
+- *{?}* : Full, untested
+- *{!}* : Full, untested
+- *{#}* : Partial, only works on objects
+- *{:}* : None
+- *{^}* : None
+- *{%%}* : None
+- *{*}* : None
+- *{>}* : None
+- *{<}* : None
