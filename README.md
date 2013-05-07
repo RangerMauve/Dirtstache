@@ -15,6 +15,9 @@ Tags:
 -	*{^template_name}*
 	Looks for template_name in the cached templates and renders it with the current context. It's basically partials, but all templates can be used as partials. If template_name isn't found, the block is not renered and an error is output.
 
+-	*{:helper_name arg1,arg2,argN...}*
+	Calls helper_name from registered helper function. Args in tag are seperated by a comma and passed to the helper as strings. "this" within the function is set to the current context.
+
 -	*{#variable_name} & {{/variable_name}}*
 	If variable_name is an Object the block is rendered with it as the context. If variable_name is an array of objects, the block is rendered for each object with it being set as the context. If it is an array of primitive objects, the block is executed with "this" representing the current element.
 
