@@ -46,8 +46,8 @@ Dirtstache supports an idea of inheritance so that you could inplement a layout 
 
 ToDo:
 -----
-- Decide on what tags to support and what control structures there will be
-- Parse out tags from template string
+- ~~Decide on what tags to support and what control structures there will be~~
+- ~~Parse out tags from template string~~
 - Begin supporting tags and stuff
 - Make demo of some tags
 - Figure out how to make meaningful error messages
@@ -61,7 +61,7 @@ Current Support:
 - *{?}* : Full, untested
 - *{!}* : Full, untested
 - *{#}* : Partial, only works on objects
-- *{:}* : None
+- *{:}* : Full, untested
 - *{^}* : Full, untested
 - *{%%}* : Full, untested
 - *{*}* : None

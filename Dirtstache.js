@@ -1,7 +1,8 @@
 // "Nyan, desu~~"
 (function(D){
 	//Contains the cached functions
-	D.templates = {};
+	var templates = {};
+	var helpers = {};
 	var tagTypes = {
 		"V":{name:"Var"},
 		"{":{name:"Escaped"},
@@ -83,7 +84,7 @@
 			if(t.type === "V"){
 				fn+= "if(ctx."+t.tag+" !== undefined)\n\tres+=ctx."+t.tag+";\n";
 			} else if(t.type === "{"){
-				fn+= "if(ctx."+t.tag+" !== undefined)\n\tres+=D.escape(ctx."+t.tag+");\n";
+				fn+= "if(ctx."+t.tag+" !== undefined)\n\tres+=esc(ctx."+t.tag+");\n";
 			} else if(t.type === "?"){
 				c = findClose(i,t,tags);
 				if(c > -1){
@@ -110,9 +111,18 @@
 					i = c;
 				}
 			} else if(t.type === "^"){
-				fn += "res += D.render('"+t.tag+"',ctx);\n";
-			} else if(t.type == "%"){
+				fn += "res += render('"+t.tag+"',ctx);\n";
+			} else if(t.type === "%"){
 				fn += "res+= ''+("+t.tag+");"
+			} else if(t.type === ":"){
+				t = t.tag.split(" ");
+				c = t[1].split(",");
+				t = t[0];
+				for(var k = 0; k < c.length; k++)
+					c[k] = '"'+c[k]+'"';
+				fn += ";if(helpers['"+t+"']){\n\t";
+				fn += "res+= helpers['"+t+"'].call(ctx";
+				fn += (c ? ","+c : "")+");\n}\n"
 			}
 		}
 		if(text[i])fn+='res+="'+text[i]+'";\n';
@@ -120,10 +130,10 @@
 	}
 	
 	function make(template){
-		var fn="(function(){\n\n";
-		fn+= ";var ctxs=[],ctx=arguments[0],D=arguments[1] || Dirtstache,res='';\n";
+		var fn="(function(){\n";
+		fn+= ";var ctxs=[],ctx=arguments[0],res='';\n";
 		fn +=makePart(template);
-		fn += ";\n\nreturn res;})";
+		fn += "\nreturn res;\n})";
 		return fn;
 	}
 	
@@ -136,19 +146,25 @@
 			console.error(err);
 			res = function(){return "Error parsing template:"+err;};
 		}
-		D.templates[name] = res;
+		templates[name] = res;
 		return res;
 	}
 	
 	function render(name, args){
-		return (D.templates[name]) ?
-			D.templates[name](args) : "";
+		return (templates[name]) ?
+			templates[name](args) : "";
+	}
+	function helper(name, fcn){
+		helpers[name] = fcn;
 	}
 	D.extractTags = extractTags;
 	D.extractText = extractText;
-	Dirtstache.escape = esc;
+	D.escape = esc;
 	D.make = make;
 	D.compile= compile;
 	D.render = render;
+	D.helper = helper;
+	D.templates = templates;
+	D.helpers = helpers;
 	return D;
 })(typeof module == 'object' ? module.exports : window.Dirtstache = {});
