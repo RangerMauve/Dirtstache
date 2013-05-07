@@ -109,6 +109,10 @@
 					fn += "\n;ctx = ctxs.pop();\n}"
 					i = c;
 				}
+			} else if(t.type === "^"){
+				fn += "res += D.render('"+t.tag+"',ctx);\n";
+			} else if(t.type == "%"){
+				fn += "res+= ''+("+t.tag+");"
 			}
 		}
 		if(text[i])fn+='res+="'+text[i]+'";\n';
@@ -135,10 +139,16 @@
 		D.templates[name] = res;
 		return res;
 	}
+	
+	function render(name, args){
+		return (D.templates[name]) ?
+			D.templates[name](args) : "";
+	}
 	D.extractTags = extractTags;
 	D.extractText = extractText;
 	Dirtstache.escape = esc;
 	D.make = make;
 	D.compile= compile;
+	D.render = render;
 	return D;
 })(typeof module == 'object' ? module.exports : window.Dirtstache = {});

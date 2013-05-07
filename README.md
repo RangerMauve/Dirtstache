@@ -55,15 +55,15 @@ ToDo:
 
 Current Support:
 ----------------
-- *Whitespace* : Full, untested
+- *Whitespace* : Full, mostly tested
 - *{{}}* : Full, seems to work
 - *{}* : Full, seems to work
 - *{?}* : Full, untested
 - *{!}* : Full, untested
 - *{#}* : Partial, only works on objects
 - *{:}* : None
-- *{^}* : None
-- *{%%}* : None
+- *{^}* : Full, untested
+- *{%%}* : Full, untested
 - *{*}* : None
 - *{>}* : None
 - *{<}* : None
