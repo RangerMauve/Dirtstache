@@ -12,7 +12,6 @@
 			height:100px;
 		}
 		.ou{
-			border: 1px solid black;
 			width:600px;
 			height:200px;
 		}
@@ -41,13 +40,19 @@
 			<div class="in">
 				<div>Template:</div>
 				<textarea id="tm">
-<h1>Hello, {name}.</h1>I really like <b>{#stuff}{dicks}{/stuff}!</b>				
+<h1>Hello, {name}.</h1>
+I really like <b>{#stuff}{dicks}{/stuff}!</b>
 				</textarea>
 			</div>
 			<div class="in">
 				<div>JSON:</div>
 				<textarea id="js">
-{"name":"Bob Dole","stuff":{"dicks":"Butts"}}
+{
+  "name":"Bob Dole",
+  "stuff":{
+    "dicks":"Butts"
+  }
+}
 				</textarea>
 			</div>
 			<div>

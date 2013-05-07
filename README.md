@@ -2,6 +2,7 @@ Dirtstache
 ==========
 
 This is a moustache-like templating engine that will hopefully support features that I found lacking in others
+You can view the test page [Here](http://htmlpreview.github.com/?https://raw.github.com/RangerMauve/Dirtstache/master/test/test1.html).
 
 Tags:
 -----
@@ -54,8 +55,9 @@ ToDo:
 
 Current Support:
 ----------------
-- *{{}}* : Partial, escaping not set up yet
-- *{}* : Full, untested
+- *Whitespace* : Full, untested
+- *{{}}* : Full, seems to work
+- *{}* : Full, seems to work
 - *{?}* : Full, untested
 - *{!}* : Full, untested
 - *{#}* : Partial, only works on objects
