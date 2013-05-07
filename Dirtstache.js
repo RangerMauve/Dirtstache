@@ -26,6 +26,12 @@
 		return ob.tags;
 	}
 	
+	function esc(str){
+    	 str = str.replace(/\</g,"&lt;");
+    	 str = str.replace(/\>/g,"&gt;");
+		 return str;
+	}
+	
 	function nextTag(ob){
 		var st = ob.template.indexOf("{",ob.index);
 		if(ob.template.charAt(st-2) == "\\")return ob.index = st;
@@ -50,6 +56,7 @@
 	function extractText(template){
 		var res = [];
 		var index = 0;
+		template = template.split("\n").join("\\n");
 		while(true){
 			res.push(template.slice(index,template.indexOf("{",index)));
 			index = template.indexOf("}",index+1)+1;
@@ -71,12 +78,12 @@
 		var fn = "";
 		var t, c;
 		for(var i = 0; i < tags.length; i++){
-			if(text[i])fn+='res+="'+text[i]+'";';
+			if(text[i])fn+='res+="'+text[i]+'";\n';
 			t = tags[i];
 			if(t.type === "V"){
-				fn+= "if(ctx."+t.tag+" !== undefined)res+=ctx."+t.tag+";";
+				fn+= "if(ctx."+t.tag+" !== undefined)\n\tres+=ctx."+t.tag+";\n";
 			} else if(t.type === "{"){
-				fn+= "if(ctx."+t.tag+" !== undefined)res+=escape(ctx."+t.tag+");";
+				fn+= "if(ctx."+t.tag+" !== undefined)\n\tres+=D.escape(ctx."+t.tag+");\n";
 			} else if(t.type === "?"){
 				c = findClose(i,t,tags);
 				if(c > -1){
@@ -97,20 +104,20 @@
 				c = findClose(i,t,tags);
 				if(c > -1){
 					fn += "if(ctx."+c.tag+"){\n";
-					fn += ";ctxs.push(ctx);ctx=ctx['"+t.tag+"'];\n"
+					fn += "ctxs.push(ctx);ctx=ctx['"+t.tag+"'];\n"
 					fn += makePart(part.slice(t.end+1,tags[c].start));
 					fn += "\n;ctx = ctxs.pop();\n}"
 					i = c;
 				}
 			}
 		}
-		if(text[i])fn+='res+="'+text[i]+'";';
+		if(text[i])fn+='res+="'+text[i]+'";\n';
 		return fn;
 	}
 	
 	function make(template){
 		var fn="(function(){\n\n";
-		fn+= ";var ctxs=[],ctx=arguments[0],D=arguments[1],res='';\n";
+		fn+= ";var ctxs=[],ctx=arguments[0],D=arguments[1] || Dirtstache,res='';\n";
 		fn +=makePart(template);
 		fn += ";\n\nreturn res;})";
 		return fn;
@@ -130,6 +137,7 @@
 	}
 	D.extractTags = extractTags;
 	D.extractText = extractText;
+	Dirtstache.escape = esc;
 	D.make = make;
 	D.compile= compile;
 	return D;

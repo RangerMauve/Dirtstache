@@ -54,7 +54,7 @@ ToDo:
 
 Current Support:
 ----------------
-- *{{}}* : Full, untested
+- *{{}}* : Partial, escaping not set up yet
 - *{}* : Full, untested
 - *{?}* : Full, untested
 - *{!}* : Full, untested

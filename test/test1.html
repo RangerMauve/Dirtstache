@@ -11,7 +11,7 @@
 			width:300px;
 			height:100px;
 		}
-		.ou {
+		.ou{
 			border: 1px solid black;
 			width:600px;
 			height:200px;
@@ -23,9 +23,11 @@
 			var tm = ""+document.getElementById("tm").value;
 			var js = JSON.parse(document.getElementById("js").value);
 			
-			out = (Dirtstache.compile("test",tm)(js));
+			var out = Dirtstache.make(tm);
+			var out2 = Dirtstache.compile("test",tm)(js);
 			
-			document.getElementById("out").innerHTML = out;
+			document.getElementById("cout").innerHTML = Dirtstache.escape(out);
+			document.getElementById("hout").innerHTML = Dirtstache.escape(out2);
 		}
 		function toggleVisible(id){
 				var s= document.getElementById(id).style;
@@ -44,9 +46,10 @@
 				<div>JSON:</div>
 				<textarea id="js">{"name":"Bob Dole","stuff":"dicks"}</textarea>
 			</div>
-			<div class="ou">
+			<div>
 				<div>Output:</div>
-				<div><code id="out">Code will go here</code></div>
+				<textarea id="cout" class="ou">Code will go here</textarea>
+				<textarea id="hout" class="ou">Html will go here</textarea>
 			</div>
 			<div>
 				<center>
