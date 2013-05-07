@@ -1,3 +1,53 @@
 <html>
+	<head>
+	<style>
+		#content{
+			width:700px;
+		}
+		.in{
+			display:inline-block;
+		}
+		textarea {
+			width:300px;
+			height:100px;
+		}
+		.ou {
+			border: 1px solid black;
+			width:600px;
+			height:200px;
+		}
+	</style>
 	<script src="../Dirtstache.js"></script>
+	<script>
+		function compute(){
+			var tm = ""+document.getElementById("tm").value;
+			var js = JSON.parse(document.getElementById("js").value);
+			
+			out = (Dirtstache.compile("test",tm)(js));
+			
+			document.getElementById("out").innerHTML = out;
+		}
+	</script>
+	</head>
+	<body>
+		<div id="content">
+			<div class="in">
+				<div>Template:</div>
+				<textarea id="tm"><h1>Hello, {name}.</h1>I really like <b>{{stuff}}!</b></textarea>
+			</div>
+			<div class="in">
+				<div>JSON:</div>
+				<textarea id="js">{"name":"Bob Dole","stuff":"dicks"}</textarea>
+			</div>
+			<div class="ou">
+				<div>Output:</div>
+				<div><code id="out">Code will go here</code></div>
+			</div>
+			<div>
+				<center>
+					<button onclick="compute()">Render</button>
+				</center>
+			</div>
+		</div>
+	</body>
 </html>

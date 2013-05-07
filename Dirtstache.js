@@ -79,16 +79,26 @@
 				fn+= "if(ctx."+t.tag+" !== undefined)res+=escape(ctx."+t.tag+");";
 			} else if(t.type === "?"){
 				c = findClose(i,t,tags);
-				fn += "if(ctx."+t.tag+"){\n";
-				fn += makePart(part.slice(t.end+1,tags[c].start)).split("\n").join("\n  ");
-				fn += "\n}\n";
-				i = c;
+				if(c > -1){
+					fn += "if(ctx."+t.tag+"){\n";
+					fn += makePart(part.slice(t.end+1,tags[c].start));
+					fn += "\n}\n";
+					i = c;
+				}
+			} else if(t.type === "!"){
+				c = findClose(i,t,tags);
+				if(c > -1){
+					fn += "if(!ctx."+t.tag+"){\n";
+					fn += makePart(part.slice(t.end+1,tags[c].start));
+					fn += "\n}\n";
+					i = c;
+				}
 			} else if(t.type === "#"){
 				c = findClose(i,t,tags);
 				if(c > -1){
 					fn += "if(ctx."+c.tag+"){\n";
 					fn += ";ctxs.push(ctx);ctx=ctx['"+t.tag+"'];\n"
-					fn += makePart(part.slice(t.end+1,tags[c].start)).split("\n").join("\n  ");
+					fn += makePart(part.slice(t.end+1,tags[c].start));
 					fn += "\n;ctx = ctxs.pop();\n}"
 					i = c;
 				}
