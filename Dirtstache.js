@@ -9,7 +9,8 @@
 		"^":{name:"Template"},
 		":":{name:"Helper"},
 		"/":{name:"Close"},
-		"#":{name:"Iterate"},
+		"#":{name:"Context"},
+		"&":{name:"Iterate"},
 		"?":{name:"Truthy"},
 		"!":{name:"Falsey"},
 		"%":{name:"Raw"},
@@ -57,12 +58,16 @@
 	function extractText(template){
 		var res = [];
 		var index = 0;
-		template = template.split("\n").join("\\n");
+		template = template.split("\\").join("\\\\").split("\n").join("\\n");
 		while(true){
 			res.push(template.slice(index,template.indexOf("{",index)));
-			index = template.indexOf("}",index+1)+1;
+			index = template.indexOf("}",index);
 			if(template.charAt(index) ==="}")index++;
-			if(index <= 0)break;
+			if(template.charAt(index) ==="}")index++;
+			if(template.indexOf("{",index) < 0){
+				res.push(template.slice(index));
+				break;
+			}
 		}
 		return res;
 	}
@@ -73,11 +78,11 @@
 		}
 		return -1;
 	}
-	function makePart(part){
-		var tags = extractTags(part);
-		var text = extractText(part);
+	function makePart(part, tags, text){
+		tags = tags || extractTags(part);
+		text = text || extractText(part);
 		var fn = "";
-		var t, c;
+		var t, c, d;
 		for(var i = 0; i < tags.length; i++){
 			if(text[i])fn+='res+="'+text[i]+'";\n';
 			t = tags[i];
@@ -104,10 +109,26 @@
 			} else if(t.type === "#"){
 				c = findClose(i,t,tags);
 				if(c > -1){
-					fn += "if(ctx."+t.tag+"){\n";
-					fn += "ctxs.push(ctx);ctx=ctx['"+t.tag+"'];\n"
-					fn += makePart(part.slice(t.end+1,tags[c].start));
-					fn += "\n;ctx = ctxs.pop();\n}"
+					fn += "if(ctx."+t.tag+"){\n\t";
+						fn += "ctxs.push(ctx);ctx=ctx['"+t.tag+"'];\n";
+						fn += makePart(part.slice(t.end+1,tags[c].start));
+					fn += "\nctx = ctxs.pop();}\n";
+					i = c;
+				}
+			} else if(t.type === "&"){
+				d = t.tag.split("=");
+				t.tag = d[0];
+				c = findClose(i,t,tags);
+				if(c > -1){
+					if(d){
+						fn += "if(ctx."+d[0]+" && (typeof ctx."+d[0]+" === 'object') &&!(ctx."+d[0]+" instanceof String)){\n\t";
+						fn += "var tm = ctx."+d[0]+";\n\t";
+						fn += "ctxs.push(ctx);ctx = {};\n\t";
+						fn += "for(var _i = 0; _i < tm.length; _i++){\n\t\t"
+						fn += "ctx."+d[1]+"= tm[_i];\n";
+						fn += makePart(part.slice(t.end+1,tags[c].start));
+						fn += "\n}\nctx = ctxs.pop();\n}\n;";
+					}
 					i = c;
 				}
 			} else if(t.type === "^"){

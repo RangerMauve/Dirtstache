@@ -19,8 +19,11 @@ Tags:
 -	*{:helper_name arg1,arg2,argN...}*
 	Calls helper_name from registered helper function. Args in tag are seperated by a comma and passed to the helper as strings. "this" within the function is set to the current context.
 
--	*{#variable_name} & {{/variable_name}}*
-	If variable_name is an Object the block is rendered with it as the context. If variable_name is an array of objects, the block is rendered for each object with it being set as the context. If it is an array of primitive objects, the block is executed with "this" representing the current element.
+-	*{#variable_name} & {/variable_name}*
+	Switches current context to variable_name for the block of code. If variable_name doesn't refer to an Object, block is ignored.
+	
+-	*{&variable_name=item_name} & {/variable_name}*
+	Iterates through variable_name and sets item_name to the current element.
 
 -	*{?variable_name} & {/variable_name}*
 	If variable_name is a truthy value, the block of code is rendered. Else it silently ignores it.
